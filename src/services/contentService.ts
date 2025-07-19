@@ -1,5 +1,9 @@
 import { ContentItem } from '../store/slices/contentSlice';
 
+// News API configuration
+const NEWS_API_KEY = '92a8d983aab74a7cb53f43a8a2f8abf2';
+const NEWS_API_BASE_URL = 'https://newsapi.org/v2';
+
 // Mock data for demonstration
 export const mockNewsData: ContentItem[] = [
   {
@@ -91,17 +95,76 @@ export const getAllContent = (): ContentItem[] => {
   return [...mockNewsData, ...mockMovieData, ...mockSocialData];
 };
 
-export const getContentByCategories = async (categories: string[]): Promise<ContentItem[]> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  const allContent = getAllContent();
-  
-  if (categories.length === 0) {
-    return allContent;
+// Fetch real news from News API
+const fetchNewsFromAPI = async (categories: string[]): Promise<ContentItem[]> => {
+  try {
+    const categoryMap: { [key: string]: string } = {
+      'technology': 'technology',
+      'environment': 'science',
+      'finance': 'business',
+      'sports': 'sports',
+      'entertainment': 'entertainment',
+      'health': 'health'
+    };
+
+    const newsItems: ContentItem[] = [];
+    
+    for (const category of categories) {
+      const apiCategory = categoryMap[category] || 'general';
+      const response = await fetch(
+        `${NEWS_API_BASE_URL}/top-headlines?category=${apiCategory}&country=us&pageSize=10&apiKey=${NEWS_API_KEY}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        const articles = data.articles?.map((article: any, index: number) => ({
+          id: `news-${category}-${index}`,
+          type: 'news' as const,
+          title: article.title || 'No title',
+          description: article.description || 'No description available',
+          image: article.urlToImage || undefined,
+          url: article.url || '#',
+          publishedAt: article.publishedAt || new Date().toISOString(),
+          category: category,
+          source: article.source?.name || 'News API',
+        })) || [];
+        
+        newsItems.push(...articles);
+      }
+    }
+    
+    return newsItems;
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    return [];
   }
+};
+
+export const getContentByCategories = async (categories: string[]): Promise<ContentItem[]> => {
+  const newsCategories = categories.filter(cat => 
+    ['technology', 'environment', 'finance', 'sports', 'entertainment', 'health'].includes(cat)
+  );
   
-  return allContent.filter(item => categories.includes(item.category));
+  const otherCategories = categories.filter(cat => 
+    !['technology', 'environment', 'finance', 'sports', 'entertainment', 'health'].includes(cat)
+  );
+
+  // Fetch real news for supported categories
+  const newsContent = newsCategories.length > 0 ? await fetchNewsFromAPI(newsCategories) : [];
+  
+  // Get mock data for other categories
+  const allMockContent = [...mockMovieData, ...mockSocialData];
+  const mockContent = otherCategories.length > 0 
+    ? allMockContent.filter(item => otherCategories.includes(item.category))
+    : [];
+
+  // If no categories selected, return mix of real news and mock data
+  if (categories.length === 0) {
+    const defaultNews = await fetchNewsFromAPI(['technology', 'finance']);
+    return [...defaultNews, ...mockMovieData, ...mockSocialData];
+  }
+
+  return [...newsContent, ...mockContent];
 };
 
 export const searchContent = async (query: string): Promise<ContentItem[]> => {
