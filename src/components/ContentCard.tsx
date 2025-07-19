@@ -73,7 +73,7 @@ export const ContentCard = ({ content, layout }: ContentCardProps) => {
         style={style}
         {...attributes}
         {...listeners}
-        className="content-card flex gap-4 cursor-grab active:cursor-grabbing"
+        className="content-card group flex gap-4 cursor-grab active:cursor-grabbing"
       >
         {content.image && (
           <div className="w-32 h-24 flex-shrink-0 relative overflow-hidden rounded-lg">
@@ -160,7 +160,7 @@ export const ContentCard = ({ content, layout }: ContentCardProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="content-card cursor-grab active:cursor-grabbing"
+      className="content-card group cursor-grab active:cursor-grabbing"
     >
       {content.image && (
         <div className="relative overflow-hidden">

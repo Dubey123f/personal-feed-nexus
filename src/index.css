@@ -169,7 +169,7 @@ All colors MUST be HSL.
 
   /* Content Feed Styles */
   .content-card {
-    @apply card-dashboard p-6 hover:-translate-y-1 group cursor-pointer;
+    @apply card-dashboard p-6 hover:-translate-y-1 cursor-pointer;
   }
 
   .content-card-image {
