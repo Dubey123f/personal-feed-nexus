@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# Personalized Content Dashboard – SDE Intern Assignment
 
-## Project info
+This project is a **Personalized Content Dashboard** that allows users to view and interact with a curated content feed including news, media recommendations, and social posts. It features an intuitive and responsive UI, state management with Redux Toolkit, and seamless integration with third-party APIs.
 
-**URL**: https://lovable.dev/projects/747735e7-8b23-45d5-8abc-91b7a606f953
+## 🔧 Tech Stack
+- **React.js + Next.js**
+- **TypeScript**
+- **Redux Toolkit + RTK Query**
+- **Tailwind CSS**
+- **Framer Motion / React DnD**
+- **Jest / React Testing Library / Cypress**
 
-## How can I edit this code?
+## 📦 Features
 
-There are several ways of editing your application.
+### 📰 Personalized Content Feed
+- Configure favorite categories (technology, sports, finance).
+- News from NewsAPI, movie/music recommendations from TMDB/Spotify, mock social media posts.
+- Interactive content cards with infinite scroll/pagination.
 
-**Use Lovable**
+### 🧩 User Dashboard Layout
+- Sidebar + Header with search and settings.
+- Sections: Feed, Trending, Favorites.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/747735e7-8b23-45d5-8abc-91b7a606f953) and start prompting.
+### 🔍 Search Functionality
+- Search content across all sources.
+- Debounced input for performance.
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🌙 Advanced UI/UX
+- Drag-and-drop content reordering.
+- Dark mode toggle.
+- Framer Motion animations.
 
-**Use your preferred IDE**
+### 🧠 State Management
+- Redux Toolkit for global state.
+- Async fetching with RTK Query.
+- User preferences stored in localStorage or Redux Persist.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🧪 Testing
+- Unit tests for components.
+- Integration tests for rendering + API handling.
+- E2E testing with Cypress (search, drag-drop, etc.).
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Bonus (Optional)
+- 🔐 Auth with NextAuth.js or mock login.
+- 🔁 Real-time data via WebSocket or SSE.
+- 🌍 Multi-language support via `react-i18next`.
 
-Follow these steps:
+## 📂 Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/747735e7-8b23-45d5-8abc-91b7a606f953) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### 1. Clone Repo
+```bash
+git clone https://github.com/yourusername/personalized-dashboard.git
+cd personalized-dashboard
