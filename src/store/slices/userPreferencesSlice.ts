@@ -10,7 +10,7 @@ export interface UserPreferences {
 }
 
 const initialState: UserPreferences = {
-  categories: ['technology', 'business', 'entertainment'],
+  categories: ['technology', 'finance', 'entertainment', 'movies', 'social'],
   darkMode: false,
   favoriteItems: [],
   language: 'en',
