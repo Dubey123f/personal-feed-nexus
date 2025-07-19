@@ -49,5 +49,5 @@ This project is a **Personalized Content Dashboard** that allows users to view a
 
 ### 1. Clone Repo
 ```bash
-git clone https://github.com/yourusername/personalized-dashboard.git
-cd personalized-dashboard
+git clone https://github.com/Dubey123f/personal-feed-nexus.git
+cd personal-feed-nexus
