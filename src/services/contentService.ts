@@ -4,7 +4,7 @@ import { ContentItem } from '../store/slices/contentSlice';
 const NEWS_API_KEY = '92a8d983aab74a7cb53f43a8a2f8abf2';
 const NEWS_API_BASE_URL = 'https://newsapi.org/v2';
 
-// Mock data for demonstration
+// Enhanced mock news data with recent topics
 export const mockNewsData: ContentItem[] = [
   {
     id: '1',
@@ -15,7 +15,7 @@ export const mockNewsData: ContentItem[] = [
     url: '#',
     publishedAt: new Date().toISOString(),
     category: 'technology',
-    source: 'TechNews',
+    source: 'TechNews Today',
   },
   {
     id: '2',
@@ -26,7 +26,7 @@ export const mockNewsData: ContentItem[] = [
     url: '#',
     publishedAt: new Date(Date.now() - 3600000).toISOString(),
     category: 'environment',
-    source: 'Global News',
+    source: 'Global Environmental News',
   },
   {
     id: '3',
@@ -38,6 +38,39 @@ export const mockNewsData: ContentItem[] = [
     publishedAt: new Date(Date.now() - 7200000).toISOString(),
     category: 'finance',
     source: 'CryptoDaily',
+  },
+  {
+    id: '8',
+    type: 'news',
+    title: 'Major Tech Companies Announce Green Energy Initiatives',
+    description: 'Leading technology firms commit to 100% renewable energy across all operations by 2025.',
+    image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&h=400&fit=crop',
+    url: '#',
+    publishedAt: new Date(Date.now() - 10800000).toISOString(),
+    category: 'technology',
+    source: 'Tech Today',
+  },
+  {
+    id: '9',
+    type: 'news',
+    title: 'Stock Markets Reach All-Time Highs Amid Economic Recovery',
+    description: 'Major indices surge as investor confidence returns following strong quarterly earnings reports.',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=400&fit=crop',
+    url: '#',
+    publishedAt: new Date(Date.now() - 14400000).toISOString(),
+    category: 'finance',
+    source: 'Financial Times',
+  },
+  {
+    id: '10',
+    type: 'news',
+    title: 'Olympic Games 2024: Record-Breaking Performances',
+    description: 'Athletes continue to break world records in multiple events, showcasing incredible human potential.',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop',
+    url: '#',
+    publishedAt: new Date(Date.now() - 18000000).toISOString(),
+    category: 'sports',
+    source: 'Sports Central',
   },
 ];
 
@@ -141,6 +174,9 @@ const fetchNewsFromAPI = async (categories: string[]): Promise<ContentItem[]> =>
 };
 
 export const getContentByCategories = async (categories: string[]): Promise<ContentItem[]> => {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
   const newsCategories = categories.filter(cat => 
     ['technology', 'environment', 'finance', 'sports', 'entertainment', 'health'].includes(cat)
   );
@@ -149,19 +185,40 @@ export const getContentByCategories = async (categories: string[]): Promise<Cont
     !['technology', 'environment', 'finance', 'sports', 'entertainment', 'health'].includes(cat)
   );
 
-  // Fetch real news for supported categories
-  const newsContent = newsCategories.length > 0 ? await fetchNewsFromAPI(newsCategories) : [];
+  // Try to fetch real news first, fallback to mock news on error
+  let newsContent: ContentItem[] = [];
   
-  // Get mock data for other categories
+  if (newsCategories.length > 0) {
+    try {
+      newsContent = await fetchNewsFromAPI(newsCategories);
+      // If API fails (empty result), use mock news data for those categories
+      if (newsContent.length === 0) {
+        newsContent = mockNewsData.filter(item => newsCategories.includes(item.category));
+      }
+    } catch (error) {
+      console.warn('News API failed, using mock data:', error);
+      newsContent = mockNewsData.filter(item => newsCategories.includes(item.category));
+    }
+  }
+  
+  // Get mock data for other categories (movies, social)
   const allMockContent = [...mockMovieData, ...mockSocialData];
   const mockContent = otherCategories.length > 0 
     ? allMockContent.filter(item => otherCategories.includes(item.category))
     : [];
 
-  // If no categories selected, return mix of real news and mock data
+  // If no categories selected, return mix of content including mock news
   if (categories.length === 0) {
-    const defaultNews = await fetchNewsFromAPI(['technology', 'finance']);
-    return [...defaultNews, ...mockMovieData, ...mockSocialData];
+    try {
+      const defaultNews = await fetchNewsFromAPI(['technology', 'finance']);
+      if (defaultNews.length > 0) {
+        return [...defaultNews, ...mockMovieData, ...mockSocialData];
+      }
+    } catch (error) {
+      console.warn('News API failed for default content, using mock data');
+    }
+    // Fallback to all mock data
+    return [...mockNewsData, ...mockMovieData, ...mockSocialData];
   }
 
   return [...newsContent, ...mockContent];
